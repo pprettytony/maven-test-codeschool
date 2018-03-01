@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+
+<suite name="Suite1">
+    <test name="test1" >
+        <!--<parameter name="rowNumber" value="1"/>-->
+        <classes>
+            <class name="BookmarksTest">
+                <methods>
+                    <exclude name="removingFromBookmarksTest"/>
+                    <exclude name="removingFromAccountTest"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
+<!--    <test name="test2">
+        <classes>
+            <class name="BookmarksTest">
+                <methods>
+                    <exclude name="removingFromBookmarksTest"/>
+                    <exclude name="removingFromAccountTest"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
+    <test name="test3" >
+        <classes>
+            <class name="BookmarksTest">
+                <methods>
+                    <exclude name="removingFromSearchTest"/>
+                    <exclude name="removingFromBookmarksTest"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
+    <test name="test4">
+        <classes>
+            <class name="BookmarksTest">
+                <methods>
+                    <exclude name="removingFromSearchTest"/>
+                    <exclude name="removingFromAccountTest"/>
+                </methods>
+            </class>
+        </classes>
+    </test>-->
+</suite>
