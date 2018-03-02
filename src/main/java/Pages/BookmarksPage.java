@@ -55,9 +55,9 @@ public class BookmarksPage extends AnyPage{
         setWaiter(null, pageLoaded, null);
         //wait.until(ExpectedConditions.visibilityOf(searchField));
         Actions actions = new Actions(driver);
-        actions.moveToElement(getWebElement(getDynamicXpath(addedCourseInBookmarksLocator, id)))
-                .moveToElement(getWebElement(getDynamicXpath(addedCourseInBookmarksLocator, id)))
-                .click()
+        WebElement elem = getWebElement(getDynamicXpath(addedCourseInSearchLocator, id));
+        actions.moveToElement(elem)
+                .click(elem)
                 .perform();
         setWaiter(addedCourseInBookmarksLocator, invisibilityOf, id);
     }

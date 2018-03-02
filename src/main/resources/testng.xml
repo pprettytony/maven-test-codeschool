@@ -13,7 +13,7 @@
             </class>
         </classes>
     </test>
-<!--    <test name="test2">
+    <test name="test2">
         <classes>
             <class name="BookmarksTest">
                 <methods>
@@ -42,5 +42,5 @@
                 </methods>
             </class>
         </classes>
-    </test>-->
+    </test>
 </suite>
