@@ -1,0 +1,2 @@
+browserName=opera
+binary=src/main/resources/operadriver.exe

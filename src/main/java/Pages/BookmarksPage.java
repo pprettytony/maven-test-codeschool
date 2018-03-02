@@ -7,6 +7,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,14 +23,13 @@ public class BookmarksPage extends AnyPage{
     enum Expected{
         elementToBeClickable,
         visibilityOf,
-        invisibilityOf,
-        pageLoaded
+        invisibilityOf
     }
 
-    private String addedCourseWithIdLocator = "//a[contains(@class,'is-bookmarked') and @data-bookmark-id = 'set_your_id']";
-    private String notAddedCourseWithIdLocator = "//a[not(contains(@class,'is-bookmarked')) and @data-bookmark-id = 'set_your_id']";
-    private String addedCourseInSearchLocator = "//a[@data-bookmark-id = 'set_your_id']";
-    private String addedCourseInBookmarksLocator = "//li[@data-bookmark-id = 'set_your_id']";
+    String addedCourseWithIdLocator = "//a[contains(@class,'is-bookmarked') and @data-bookmark-id = 'set_your_id']";
+    String notAddedCourseWithIdLocator = "//a[not(contains(@class,'is-bookmarked')) and @data-bookmark-id = 'set_your_id']";
+    String addedCourseInSearchLocator = "//a[@data-bookmark-id = 'set_your_id']";
+    String addedCourseInBookmarksLocator = "//li[@data-bookmark-id = 'set_your_id']/a";
 
     @FindBy(xpath = "//a[@class = 'search-trigger']")
     public WebElement searchField;
@@ -52,12 +52,11 @@ public class BookmarksPage extends AnyPage{
 
     @Step("Remove course from bookmarks")
     public void removeFromBookmarks(String id){
-        setWaiter(null, pageLoaded, null);
-        //wait.until(ExpectedConditions.visibilityOf(searchField));
+        wait.until(ExpectedConditions.visibilityOf(searchField));
         Actions actions = new Actions(driver);
-        WebElement elem = getWebElement(getDynamicXpath(addedCourseInSearchLocator, id));
-        actions.moveToElement(elem)
-                .click(elem)
+        actions.moveToElement(getWebElement(getDynamicXpath(addedCourseInBookmarksLocator, id)))
+                .moveToElement(getWebElement(getDynamicXpath(addedCourseInBookmarksLocator, id)))
+                .click()
                 .perform();
         setWaiter(addedCourseInBookmarksLocator, invisibilityOf, id);
     }
@@ -73,7 +72,6 @@ public class BookmarksPage extends AnyPage{
     @Step("get bookmarks page")
     public void goToBookmarks(){
         driver.get("https://www.codeschool.com/account/bookmarks");
-        setWaiter(null, pageLoaded, null);
     }
 
     @Step("get list of courses")
@@ -84,5 +82,28 @@ public class BookmarksPage extends AnyPage{
             list.add(new Course(item.getAttribute("data-bookmark-id")));
         }
         return list;
+    }
+
+    @Step("finding element on page")
+    public String getDynamicXpath(String xpath, String id){
+        return xpath.replace("set_your_id", id);
+    }
+
+    public WebElement getWebElement(String xpath){
+        return driver.findElement(By.xpath(xpath));
+    }
+
+    @Step("waiting")
+    public void setWaiter(String xpath, Expected conditions, String id){
+        String dynXpath = getDynamicXpath(xpath, id);
+        switch (conditions){
+            case elementToBeClickable:
+                wait.until(ExpectedConditions
+                        .elementToBeClickable(By.xpath(dynXpath)));
+                break;
+            case invisibilityOf:
+                wait.until(ExpectedConditions.invisibilityOf(getWebElement(dynXpath)));
+                break;
+        }
     }
 }
